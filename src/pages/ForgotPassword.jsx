@@ -25,7 +25,7 @@ function ForgotPassword() {
         className="bg-white p-10 rounded-3xl shadow-2xl w-96 relative overflow-hidden"
         onSubmit={handleSubmit}
       >
-        {/* Decorative background circles */}
+      
         <div className="absolute -top-10 -right-10 w-40 h-40 bg-pink-200 rounded-full mix-blend-multiply filter blur-2xl opacity-50 animate-pulse"></div>
         <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-purple-200 rounded-full mix-blend-multiply filter blur-2xl opacity-50 animate-pulse"></div>
 
