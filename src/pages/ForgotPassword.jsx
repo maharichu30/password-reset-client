@@ -13,6 +13,7 @@ function ForgotPassword() {
         "https://password-reset-server-4fdw.onrender.com/api/auth/forgot-password",
         { email }
       );
+
       setMessage(res.data.message);
     } catch (error) {
       setMessage(error.response?.data?.message || "Error occurred");
