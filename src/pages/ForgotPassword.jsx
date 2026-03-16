@@ -15,15 +15,21 @@ function ForgotPassword() {
       const res = await axios.post(
         "https://password-reset-server-4fdw.onrender.com/api/auth/forgot-password",
         { email },
+        { timeout: 15000 }
       );
 
       setMessage(res.data.message);
     } catch (error) {
-      setMessage(error.response?.data?.message || "Error occurred");
+      if (error.code === "ECONNABORTED") {
+        setMessage("Request timed out. Please try again.");
+      } else {
+        setMessage(error.response?.data?.message || "Error occurred");
+      }
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500">
       <form
@@ -38,7 +44,9 @@ function ForgotPassword() {
         </h2>
 
         <div className="mb-6">
-          <label className="block text-gray-700 mb-2 font-medium">Email</label>
+          <label className="block text-gray-700 mb-2 font-medium">
+            Email
+          </label>
           <input
             type="email"
             placeholder="Enter your email"
@@ -46,16 +54,18 @@ function ForgotPassword() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={loading}
           />
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold rounded-xl shadow-lg hover:scale-105 transform transition disabled:opacity-70 disabled:cursor-not-allowed"
+          className="w-full py-3 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold rounded-xl shadow-lg transition disabled:opacity-70 disabled:cursor-not-allowed"
         >
-          {loading ? "Sending..." : "Send Reset Link"}
+          {loading ? "Please wait..." : "Send Reset Link"}
         </button>
+
         {message && (
           <p className="mt-4 text-sm text-center text-gray-700">{message}</p>
         )}
