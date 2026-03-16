@@ -13,7 +13,7 @@ function ForgotPassword() {
 
     try {
       const res = await axios.post(
-        "https://password-reset-server-4fdw.onrender.com/api/auth/forgot-password",
+        "https://password-reset-server-1-6q3l.onrender.com/api/auth/forgot-password",
         { email },
         { timeout: 15000 }
       );

@@ -8,7 +8,7 @@ function Login() {
     e.preventDefault(); 
 
     try {
-      const res = await fetch("https://password-reset-server-4fdw.onrender.com/api/auth/login", {
+      const res = await fetch("https://password-reset-server-1-6q3l.onrender.com/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
