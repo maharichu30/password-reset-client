@@ -5,9 +5,12 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setMessage("");
 
     try {
       const res = await axios.post(
@@ -17,6 +20,8 @@ function Register() {
       setMessage(res.data.message);
     } catch (error) {
       setMessage(error.response?.data?.message || "Error occurred");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -26,7 +31,6 @@ function Register() {
         className="bg-white p-10 rounded-3xl shadow-2xl w-96 relative overflow-hidden"
         onSubmit={handleRegister}
       >
-      
         <div className="absolute -top-10 -right-10 w-40 h-40 bg-green-200 rounded-full mix-blend-multiply filter blur-2xl opacity-50 animate-pulse"></div>
         <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-blue-200 rounded-full mix-blend-multiply filter blur-2xl opacity-50 animate-pulse"></div>
 
@@ -41,6 +45,7 @@ function Register() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={loading}
           />
         </div>
 
@@ -53,17 +58,18 @@ function Register() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            disabled={loading}
           />
         </div>
 
         <button
           type="submit"
-          className="w-full py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white font-semibold rounded-xl shadow-lg hover:scale-105 transform transition"
+          disabled={loading}
+          className="w-full py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white font-semibold rounded-xl shadow-lg hover:scale-105 transform transition disabled:opacity-70 disabled:cursor-not-allowed"
         >
-          Register
+          {loading ? "Registering..." : "Register"}
         </button>
 
-      
         {message && (
           <p className="text-sm mt-3 text-center text-gray-700">{message}</p>
         )}
