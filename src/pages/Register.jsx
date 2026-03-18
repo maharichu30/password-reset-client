@@ -1,91 +1,93 @@
 import { useState } from "react";
-import axios from "axios";
+import API from "../utils/api";
+import { useNavigate, Link } from "react-router-dom";
 
-function Register() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+export default function Register() {
+  const [data, setData] = useState({});
+  const navigate = useNavigate();
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage("");
-
+  const handleRegister = async () => {
     try {
-      const res = await axios.post(
-        "https://password-reset-server-1-6q3l.onrender.com/api/auth/register",
-        { email, password }
-      );
-      setMessage(res.data.message);
-    } catch (error) {
-      setMessage(error.response?.data?.message || "Error occurred");
-    } finally {
-      setLoading(false);
+      await API.post("/auth/register", data);
+      alert("Registered successfully ✅");
+      navigate("/");
+    } catch {
+      alert("Error ❌");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-400 via-blue-500 to-purple-500">
-      <form
-        className="bg-white p-10 rounded-3xl shadow-2xl w-96 relative overflow-hidden"
-        onSubmit={handleRegister}
-      >
-        <div className="absolute -top-10 -right-10 w-40 h-40 bg-green-200 rounded-full mix-blend-multiply filter blur-2xl opacity-50 animate-pulse"></div>
-        <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-blue-200 rounded-full mix-blend-multiply filter blur-2xl opacity-50 animate-pulse"></div>
+    <div className="min-h-screen flex items-center justify-center 
+      bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
 
-        <h2 className="text-3xl font-extrabold mb-6 text-gray-800 text-center">Create Account</h2>
+      <div className="bg-white/20 backdrop-blur-lg border border-white/30 
+        shadow-2xl rounded-3xl p-10 w-[380px] text-white">
 
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2 font-medium">Email</label>
-          <input
-            type="email"
-            placeholder="you@example.com"
-            className="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            disabled={loading}
-          />
-        </div>
+        <h2 className="text-3xl font-bold text-center mb-6">
+          Create Account ✨
+        </h2>
 
-        <div className="mb-6">
-          <label className="block text-gray-700 mb-2 font-medium">Password</label>
-          <input
-            type="password"
-            placeholder="********"
-            className="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            disabled={loading}
-          />
-        </div>
+        {/* Name */}
+        <input
+          placeholder="Name"
+          className="w-full p-3 mb-3 rounded-lg bg-white/20 
+          placeholder-white/70 outline-none focus:ring-2 focus:ring-white"
+          onChange={e => setData({ ...data, name: e.target.value })}
+        />
 
+        {/* Date */}
+        <input
+          type="date"
+          className="w-full p-3 mb-3 rounded-lg bg-white/20 
+          text-white outline-none focus:ring-2 focus:ring-white"
+          onChange={e => setData({ ...data, date: e.target.value })}
+        />
+
+        {/* Mobile */}
+        <input
+          placeholder="Mobile"
+          className="w-full p-3 mb-3 rounded-lg bg-white/20 
+          placeholder-white/70 outline-none focus:ring-2 focus:ring-white"
+          onChange={e => setData({ ...data, mobile: e.target.value })}
+        />
+
+        {/* Email */}
+        <input
+          type="email"
+          placeholder="Email"
+          className="w-full p-3 mb-3 rounded-lg bg-white/20 
+          placeholder-white/70 outline-none focus:ring-2 focus:ring-white"
+          onChange={e => setData({ ...data, email: e.target.value })}
+        />
+
+        {/* Password */}
+        <input
+          type="password"
+          placeholder="Password"
+          className="w-full p-3 mb-4 rounded-lg bg-white/20 
+          placeholder-white/70 outline-none focus:ring-2 focus:ring-white"
+          onChange={e => setData({ ...data, password: e.target.value })}
+        />
+
+        {/* Button */}
         <button
-          type="submit"
-          disabled={loading}
-          className="w-full py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white font-semibold rounded-xl shadow-lg hover:scale-105 transform transition disabled:opacity-70 disabled:cursor-not-allowed"
+          onClick={handleRegister}
+          className="w-full bg-white text-purple-600 font-semibold 
+          p-3 rounded-lg hover:scale-105 transition"
         >
-          {loading ? "Registering..." : "Register"}
+          Register
         </button>
 
-        {message && (
-          <p className="text-sm mt-3 text-center text-gray-700">{message}</p>
-        )}
-
-        <p className="text-sm mt-4 text-center text-gray-700">
+        {/* Login link */}
+        <p className="text-sm text-center mt-4">
           Already have an account?{" "}
-          <a
-            href="/login"
-            className="underline text-purple-600 hover:text-purple-800 transition"
-          >
+          <Link to="/" className="underline">
             Login
-          </a>
+          </Link>
         </p>
-      </form>
+
+      </div>
+
     </div>
   );
 }
-
-export default Register;
